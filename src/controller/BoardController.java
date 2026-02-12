@@ -1,6 +1,5 @@
 package controller;
 
-import domain.Post;
 import dto.PostEditDto;
 import dto.PostListDto;
 import dto.PostShowDto;
@@ -10,23 +9,9 @@ import service.BoardService;
 import java.util.*;
 
 public class BoardController {
-    private final Map<Integer, String> menuMap = new LinkedHashMap<>();
-    private final List<String> MenuList = new ArrayList<>();
     private final BoardService boardService = new BoardService();
 
-    public BoardController() {
-        this.setMenuMap();
-    }
-
-    public void setMenuMap() {
-
-        this.menuMap.put(1, "리스트 조회");
-        this.menuMap.put(2, "글 등록");
-        this.menuMap.put(3, "글 상세보기");
-        this.menuMap.put(4, "글 수정");
-        this.menuMap.put(5, "글 삭제");
-        this.menuMap.put(6, "프로그램 종료");
-    }
+    public BoardController() {}
 
     public String getMenuString() {
         return "1. Post List\t2. Write Post\t3. Show Post\t4. Edit Post\t5. Delete Post\t6. Exit";
@@ -38,14 +23,13 @@ public class BoardController {
 
         Scanner scanner = new Scanner(System.in);
 
-        try {
-            while (run) {
-                // -- show menu
-                System.out.println(menu);
+        while (run) {
+            // -- show menu
+            System.out.println(menu);
 
-                System.out.print("Select Menu > ");
-                String inputMenu = scanner.nextLine();
-
+            System.out.print("Select Menu > ");
+            String inputMenu = scanner.nextLine();
+            try {
                 switch (inputMenu) {
                     case "1":
                         System.out.println("Show Post List");
@@ -84,7 +68,11 @@ public class BoardController {
                         String strId = scanner.nextLine();
                         Long id = Long.parseLong(strId);
 
-                        boardService.showPost(id);
+                        PostShowDto postShowDto = boardService.showPost(id);
+                        System.out.println("title: " + postShowDto.getTitle());
+                        System.out.println("content: " + postShowDto.getContent());
+                        System.out.println("writer: " + postShowDto.getWriter());
+                        System.out.println("createdAt: " + postShowDto.getCreatedAt());
                         break;
                     case "4":
                         System.out.println("Edit Post");
@@ -116,10 +104,9 @@ public class BoardController {
                     default:
                         run = false;
                 }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
-
     }
 }

@@ -1,8 +1,6 @@
 package repository;
 
 import domain.Post;
-import dto.PostListDto;
-import dto.PostShowDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,21 +8,17 @@ import java.util.Objects;
 
 public class BoardRepository {
     List<Post> postList = new ArrayList<>();
+    private Long postLastId = 0L;
 
     public BoardRepository() {}
 
-    public List<PostListDto> getPostList() {
-        List<PostListDto> postListDtoList = new ArrayList<>();
-        for (Post post : postList) {
-            PostListDto postListDto = new PostListDto(post.getId(), post.getTitle(), post.getContent(), post.getWriter(), post.getCreatedAt());
-            postListDtoList.add(postListDto);
-        }
-        return postListDtoList;
+    public List<Post> getPostList() {
+        return new ArrayList<>(postList);
     }
 
     public void storePost(Post post) {
-        Long id = postList.size() + 1L;
-        post.setId(id);
+        postLastId += 1;
+        post.setId(postLastId);
 
         postList.add(post);
     }
