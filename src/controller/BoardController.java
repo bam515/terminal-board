@@ -105,6 +105,12 @@ public class BoardController {
                         break;
                     case "5":
                         System.out.println("Delete Post");
+
+                        System.out.print("Input Post Id: ");
+                        String deleteStrId = scanner.nextLine();
+                        Long deleteId = Long.parseLong(deleteStrId);
+
+                        boardService.deletePost(deleteId);
                         break;
                     case "6":
                     default:

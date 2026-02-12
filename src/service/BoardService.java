@@ -44,4 +44,12 @@ public class BoardService {
 
         post.edit(postEditDto);
     }
+
+    public void deletePost(Long id) throws Exception {
+        Post post = boardRepository.getPostById(id);
+        if (post == null) {
+            throw new Exception("Not Found Post");
+        }
+        boardRepository.deletePostById(id);
+    }
 }

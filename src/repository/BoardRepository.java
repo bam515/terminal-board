@@ -38,7 +38,12 @@ public class BoardRepository {
         return null;
     }
 
-    public void editPost(Post post) {
-
+    public void deletePostById(Long id) {
+        for (int i = 0; i < postList.size(); i++) {
+            if (Objects.equals(postList.get(i).getId(), id)) {
+                postList.remove(i);
+                break;
+            }
+        }
     }
 }
