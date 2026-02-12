@@ -24,8 +24,7 @@ public class BoardController {
         this.postMenu.put("3", "Show Post");
         this.postMenu.put("4", "Edit Post");
         this.postMenu.put("5", "Delete Post");
-        this.postMenu.put("6", "Logout");
-        this.postMenu.put("7", "Back");
+        this.postMenu.put("6", "Back");
     }
 
     public void runMenu() {
@@ -58,11 +57,6 @@ public class BoardController {
                     this.deletePost();
                     break;
                 case "6":
-                    System.out.println("Logout");
-                    this.session.logout();
-                    openMenu = false;
-                    break;
-                case "7":
                 default:
                     openMenu = false;
                     break;

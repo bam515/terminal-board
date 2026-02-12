@@ -24,8 +24,7 @@ public class UserController {
 
         this.userMenu.put("1", "Show User");
         this.userMenu.put("2", "Edit Password");
-        this.userMenu.put("3", "Logout");
-        this.userMenu.put("4", "Back");
+        this.userMenu.put("3", "Back");
     }
 
     public void runMenu() {
@@ -47,11 +46,6 @@ public class UserController {
                 case "2":
                     break;
                 case "3":
-                    System.out.println("Logout");
-                    this.session.logout();
-                    openMenu = false;
-                    break;
-                case "4":
                 default:
                     openMenu = false;
                     break;
