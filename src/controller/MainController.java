@@ -1,12 +1,16 @@
 package controller;
 
 import common.Session;
+import repository.MemoryBoardRepository;
+import repository.MemoryUserRepository;
+import service.BoardService;
+import service.UserService;
 
 import java.util.*;
 
 public class MainController {
-    Map<String, String> beforeLoginMenuMap = new LinkedHashMap<>();
-    Map<String, String> afterLoginMenuMap = new LinkedHashMap<>();
+    private final Map<String, String> beforeLoginMenuMap = new LinkedHashMap<>();
+    private final Map<String, String> afterLoginMenuMap = new LinkedHashMap<>();
 
     private final BoardController boardController;
     private final UserController userController;
@@ -26,8 +30,8 @@ public class MainController {
         this.afterLoginMenuMap.put("6", "Logout");
         this.afterLoginMenuMap.put("7", "Exit");
 
-        this.boardController = new BoardController(this.session);
-        this.userController = new UserController(this.session);
+        this.boardController = new BoardController(this.session, new BoardService(new MemoryBoardRepository()));
+        this.userController = new UserController(this.session, new UserService(new MemoryUserRepository()));
     }
 
     public Map<String, Map<String, String>> getMenu() {

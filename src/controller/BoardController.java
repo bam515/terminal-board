@@ -3,17 +3,19 @@ package controller;
 import common.Session;
 import domain.User;
 import dto.*;
-import repository.MemoryBoardRepository;
 import service.BoardService;
 
 import java.util.*;
 
 public class BoardController {
     private final Session session;
-    private final BoardService boardService = new BoardService(new MemoryBoardRepository());
+    private final BoardService boardService;
+    private final Scanner scanner;
 
-    public BoardController(Session session) {
+    public BoardController(Session session, BoardService boardService) {
         this.session = session;
+        this.boardService = boardService;
+        this.scanner = new Scanner(System.in);
     }
 
     public void showPostList() {
@@ -30,14 +32,13 @@ public class BoardController {
     }
 
     public void storePost() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Store Post");
 
         System.out.print("title: ");
-        String title = scanner.nextLine();
+        String title = this.scanner.nextLine();
 
         System.out.print("content: ");
-        String content = scanner.nextLine();
+        String content = this.scanner.nextLine();
 
         User loginedUser = this.session.getUser();
         String writer = loginedUser.getUserId();
@@ -47,12 +48,11 @@ public class BoardController {
     }
 
     public void showPost() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Show Post Detail");
 
         System.out.print("Input Post Id: ");
 
-        String strId = scanner.nextLine();
+        String strId = this.scanner.nextLine();
         Long id = Long.parseLong(strId);
 
         PostShowDto postShowDto = this.boardService.showPost(id);
@@ -63,29 +63,27 @@ public class BoardController {
     }
 
     public void editPost() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Edit Post");
 
         System.out.print("Input Post Id: ");
-        String editStrId = scanner.nextLine();
+        String editStrId = this.scanner.nextLine();
         Long editId = Long.parseLong(editStrId);
 
         System.out.print("title: ");
-        String editTitle = scanner.nextLine();
+        String editTitle = this.scanner.nextLine();
 
         System.out.print("content: ");
-        String editContent = scanner.nextLine();
+        String editContent = this.scanner.nextLine();
         PostEditDto postEditDto = new PostEditDto(editId, editTitle, editContent);
 
         this.boardService.editPost(postEditDto);
     }
 
     public void deletePost() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Delete Post");
 
         System.out.print("Input Post Id: ");
-        String deleteStrId = scanner.nextLine();
+        String deleteStrId = this.scanner.nextLine();
         Long deleteId = Long.parseLong(deleteStrId);
 
         this.boardService.deletePost(deleteId);

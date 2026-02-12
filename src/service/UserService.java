@@ -25,9 +25,6 @@ public class UserService {
 
     public User login(UserLoginDto userLoginDto) {
         List<User> userList = this.userRepository.getUserList();
-        if (userList.isEmpty()) {
-            throw new UserNotFoundException("User not found.");
-        }
 
         for (User user : userList) {
             if (Objects.equals(user.getUserId(), userLoginDto.getUserId())) {
@@ -37,10 +34,8 @@ public class UserService {
                 } else {
                     throw new WrongPasswordException("Wrong password.");
                 }
-            } else {
-                throw new UserNotFoundException("User not found.");
             }
         }
-        return null;
+        throw new UserNotFoundException("User not found.");
     }
 }

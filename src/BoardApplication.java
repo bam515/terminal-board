@@ -1,4 +1,3 @@
-import controller.BoardController;
 import controller.MainController;
 
 public class BoardApplication {

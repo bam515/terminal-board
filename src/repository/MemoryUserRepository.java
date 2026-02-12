@@ -15,7 +15,7 @@ public class MemoryUserRepository implements UserRepository {
         this.userLastId += 1;
         user.setId(this.userLastId);
 
-        userList.add(user);
+        this.userList.add(user);
     }
 
     @Override
