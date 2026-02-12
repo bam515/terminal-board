@@ -2,6 +2,8 @@ package controller;
 
 import common.Session;
 import domain.User;
+import dto.EditPasswordDto;
+import dto.LoginUserDto;
 import dto.UserLoginDto;
 import dto.UserStoreDto;
 import service.UserService;
@@ -42,8 +44,10 @@ public class UserController {
 
             switch (inputMenu) {
                 case "1":
+                    this.showUser();
                     break;
                 case "2":
+                    this.editUser();
                     break;
                 case "3":
                 default:
@@ -83,5 +87,32 @@ public class UserController {
 
         User user = this.userService.login(userLoginDto);
         this.session.login(user);
+    }
+
+    // -- 현재 로그인한 계정 정보
+    public void showUser() {
+        System.out.println("Show User");
+
+        LoginUserDto loginUserDto = this.session.getUser();
+        System.out.println("ID: " + loginUserDto.getUserId());
+        System.out.println("NAME: " + loginUserDto.getName());
+        System.out.println("createdAt: " + loginUserDto.getCreatedAt());
+        System.out.println("lastLoginDate: " + loginUserDto.getLastLoginDate());
+    }
+
+    // -- 현재 로그인한 계정 비밀번호 변경
+    public void editUser() {
+        System.out.println("Edit User");
+
+        System.out.print("Input Current Password: ");
+        String beforePassword = this.scanner.nextLine();
+
+        System.out.print("Input New Password: ");
+        String newPassword = this.scanner.nextLine();
+
+        LoginUserDto loginUserDto = this.session.getUser();
+
+        EditPasswordDto editPasswordDto = new EditPasswordDto(beforePassword, newPassword);
+        this.userService.editPassword(loginUserDto, editPasswordDto);
     }
 }

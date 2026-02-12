@@ -11,4 +11,8 @@ public interface UserRepository {
     void updateLastLoginDate(Long id);
 
     List<User> getUserList();
+
+    User getUserById(Long id);
+
+    void editPassword(Long id, String newPassword);
 }

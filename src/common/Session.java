@@ -1,12 +1,13 @@
 package common;
 
 import domain.User;
+import dto.LoginUserDto;
 
 public class Session {
     private User user = null;
 
-    public User getUser() {
-        return this.user;
+    public LoginUserDto getUser() {
+        return new LoginUserDto(this.user.getId(), this.user.getUserId(), this.user.getName(), this.user.getCreatedAt(), this.user.getLastLoginDate());
     }
 
     public void login(User user) {
@@ -14,7 +15,7 @@ public class Session {
     }
 
     public boolean isLoggedIn() {
-        return this.getUser() != null;
+        return this.user != null;
     }
 
     public void logout() {

@@ -1,6 +1,8 @@
 package service;
 
 import domain.User;
+import dto.EditPasswordDto;
+import dto.LoginUserDto;
 import dto.UserLoginDto;
 import dto.UserStoreDto;
 import exception.UserNotFoundException;
@@ -37,5 +39,14 @@ public class UserService {
             }
         }
         throw new UserNotFoundException("User not found.");
+    }
+
+    public void editPassword(LoginUserDto loginUserDto, EditPasswordDto editPasswordDto) {
+        User user = this.userRepository.getUserById(loginUserDto.getId());
+        if (Objects.equals(user.getPassword(), editPasswordDto.getBeforePassword())) {
+            this.userRepository.editPassword(loginUserDto.getId(), editPasswordDto.getNewPassword());
+        } else {
+            throw new WrongPasswordException("Wrong password.");
+        }
     }
 }

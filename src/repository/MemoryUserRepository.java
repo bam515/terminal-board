@@ -1,6 +1,7 @@
 package repository;
 
 import domain.User;
+import exception.UserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,24 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> getUserList() {
         return new ArrayList<>(this.userList);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        for (User user : this.userList) {
+            if (Objects.equals(user.getId(), id)) {
+                return user;
+            }
+        }
+        throw new UserNotFoundException("User not found.");
+    }
+
+    @Override
+    public void editPassword(Long id, String newPassword) {
+        for (User user : this.userList) {
+            if (Objects.equals(user.getId(), id)) {
+                user.editPassword(newPassword);
+            }
+        }
     }
 }

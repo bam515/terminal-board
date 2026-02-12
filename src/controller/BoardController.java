@@ -86,8 +86,8 @@ public class BoardController {
         System.out.print("content: ");
         String content = this.scanner.nextLine();
 
-        User loginedUser = this.session.getUser();
-        String writer = loginedUser.getUserId();
+        LoginUserDto loginUserDto = this.session.getUser();
+        String writer = loginUserDto.getUserId();
 
         PostWriteDto postWriteDto = new PostWriteDto(title, content, writer);
         this.boardService.storePost(postWriteDto);
