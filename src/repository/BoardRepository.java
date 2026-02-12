@@ -1,43 +1,15 @@
 package repository;
 
 import domain.Post;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class BoardRepository {
-    List<Post> postList = new ArrayList<>();
-    private Long postLastId = 0L;
+public interface BoardRepository {
 
-    public BoardRepository() {}
+    List<Post> getPostList();
 
-    public List<Post> getPostList() {
-        return new ArrayList<>(postList);
-    }
+    void storePost(Post post);
 
-    public void storePost(Post post) {
-        postLastId += 1;
-        post.setId(postLastId);
+    Post getPostById(Long id);
 
-        postList.add(post);
-    }
-
-    public Post getPostById(Long id) {
-        for (Post post : postList) {
-            if (Objects.equals(post.getId(), id)) {
-                return post;
-            }
-        }
-        return null;
-    }
-
-    public void deletePostById(Long id) {
-        for (int i = 0; i < postList.size(); i++) {
-            if (Objects.equals(postList.get(i).getId(), id)) {
-                postList.remove(i);
-                break;
-            }
-        }
-    }
+    void deletePostById(Long id);
 }

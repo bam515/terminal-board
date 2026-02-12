@@ -4,14 +4,13 @@ import dto.PostEditDto;
 import dto.PostListDto;
 import dto.PostShowDto;
 import dto.PostWriteDto;
-import exception.FieldEmptyException;
-import exception.PostNotFoundException;
+import repository.MemoryBoardRepository;
 import service.BoardService;
 
 import java.util.*;
 
 public class BoardController {
-    private final BoardService boardService = new BoardService();
+    private final BoardService boardService = new BoardService(new MemoryBoardRepository());
 
     public BoardController() {}
 
@@ -106,9 +105,9 @@ public class BoardController {
                     default:
                         run = false;
                 }
-            } catch (PostNotFoundException e) {
-                System.out.println(e.getMessage());
-            } catch (FieldEmptyException e) {
+            } catch (NumberFormatException e) {
+                System.out.println("ID is only number.");
+            } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
         }

@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardService {
-    private final BoardRepository boardRepository = new BoardRepository();
+    private final BoardRepository boardRepository;
 
-    public BoardService() {}
+    public BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
+    }
 
     public List<PostListDto> getPostList() {
         List<PostListDto> postListDtos = new ArrayList<>();
@@ -51,7 +53,7 @@ public class BoardService {
 
     public void editPost(PostEditDto postEditDto) {
         if (postEditDto.getTitle().isEmpty()) {
-            throw new FieldEmptyException("Title is empty");
+            throw new FieldEmptyException("Title is empty.");
         } else if (postEditDto.getContent().isEmpty()) {
             throw new FieldEmptyException("Content is empty.");
         }
