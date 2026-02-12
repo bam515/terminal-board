@@ -1,6 +1,7 @@
 package controller;
 
 import domain.Post;
+import dto.PostEditDto;
 import dto.PostListDto;
 import dto.PostShowDto;
 import dto.PostWriteDto;
@@ -37,73 +38,82 @@ public class BoardController {
 
         Scanner scanner = new Scanner(System.in);
 
-        while (run) {
-            // -- show menu
-            System.out.println(menu);
+        try {
+            while (run) {
+                // -- show menu
+                System.out.println(menu);
 
-            System.out.print("Select Menu > ");
-            String inputMenu = scanner.nextLine();
+                System.out.print("Select Menu > ");
+                String inputMenu = scanner.nextLine();
 
-            switch (inputMenu) {
-                case "1":
-                    System.out.println("Show Post List");
+                switch (inputMenu) {
+                    case "1":
+                        System.out.println("Show Post List");
 
-                    List<PostListDto> postListDtoList = boardService.getPostList();
-                    for (PostListDto postListDto : postListDtoList) {
-                        System.out.println("id: " + postListDto.getId());
-                        System.out.println("title: " + postListDto.getTitle());
-                        System.out.println("content: " + postListDto.getContent());
-                        System.out.println("writer: " + postListDto.getWriter());
-                        System.out.println("createdAt: " + postListDto.getCreatedAt());
-                    }
+                        List<PostListDto> postListDtoList = boardService.getPostList();
+                        for (PostListDto postListDto : postListDtoList) {
+                            System.out.println("id: " + postListDto.getId());
+                            System.out.println("title: " + postListDto.getTitle());
+                            System.out.println("content: " + postListDto.getContent());
+                            System.out.println("writer: " + postListDto.getWriter());
+                            System.out.println("createdAt: " + postListDto.getCreatedAt());
+                        }
 
-                    break;
-                case "2":
-                    System.out.println("Store Post");
+                        break;
+                    case "2":
+                        System.out.println("Store Post");
 
-                    System.out.print("title: ");
-                    String title = scanner.nextLine();
+                        System.out.print("title: ");
+                        String title = scanner.nextLine();
 
-                    System.out.print("content: ");
-                    String content = scanner.nextLine();
+                        System.out.print("content: ");
+                        String content = scanner.nextLine();
 
-                    System.out.print("writer: ");
-                    String writer = scanner.nextLine();
+                        System.out.print("writer: ");
+                        String writer = scanner.nextLine();
 
-                    PostWriteDto postWriteDto = new PostWriteDto(title, content, writer);
-                    boardService.storePost(postWriteDto);
+                        PostWriteDto postWriteDto = new PostWriteDto(title, content, writer);
+                        boardService.storePost(postWriteDto);
 
-                    break;
-                case "3":
-                    System.out.println("Show Post Detail");
+                        break;
+                    case "3":
+                        System.out.println("Show Post Detail");
 
-                    System.out.print("Input Post Id: ");
+                        System.out.print("Input Post Id: ");
 
-                    String strId = scanner.nextLine();
-                    Long id = Long.parseLong(strId);
+                        String strId = scanner.nextLine();
+                        Long id = Long.parseLong(strId);
 
-                    boardService.showPost(id);
-                    break;
-                case "4":
-                    System.out.println("Edit Post");
+                        boardService.showPost(id);
+                        break;
+                    case "4":
+                        System.out.println("Edit Post");
 
-                    System.out.print("Input Post Id: ");
-                    String editStrId = scanner.nextLine();
-                    Long editId = Long.parseLong(editStrId);
+                        System.out.print("Input Post Id: ");
+                        String editStrId = scanner.nextLine();
+                        Long editId = Long.parseLong(editStrId);
 
-                    System.out.print("title: ");
-                    String editTitle = scanner.nextLine();
+                        System.out.print("title: ");
+                        String editTitle = scanner.nextLine();
 
-                    System.out.print("content: ");
-                    String editContent = scanner.nextLine();
-                    break;
-                case "5":
-                    System.out.println("Delete Post");
-                    break;
-                case "6":
-                default:
-                    run = false;
+                        System.out.print("content: ");
+                        String editContent = scanner.nextLine();
+                        PostEditDto postEditDto = new PostEditDto(editId, editTitle, editContent);
+
+                        boardService.editPost(postEditDto);
+
+                        break;
+                    case "5":
+                        System.out.println("Delete Post");
+                        break;
+                    case "6":
+                    default:
+                        run = false;
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
     }
 }

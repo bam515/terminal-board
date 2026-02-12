@@ -6,6 +6,7 @@ import dto.PostShowDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BoardRepository {
     List<Post> postList = new ArrayList<>();
@@ -28,20 +29,16 @@ public class BoardRepository {
         postList.add(post);
     }
 
-    public PostShowDto showPost(Long id) {
-        PostShowDto postShowDto = null;
-        try {
-            for (Post post : postList) {
-                if (post.getId() == id) {
-                    postShowDto = new PostShowDto(post.getTitle(), post.getContent(), post.getWriter(), post.getCreatedAt());
-                }
+    public Post getPostById(Long id) {
+        for (Post post : postList) {
+            if (Objects.equals(post.getId(), id)) {
+                return post;
             }
-            if (postShowDto == null) {
-                throw new Exception("Not Found Post");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return postShowDto;
+        return null;
+    }
+
+    public void editPost(Post post) {
+
     }
 }

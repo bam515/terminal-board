@@ -1,5 +1,7 @@
 package domain;
 
+import dto.PostEditDto;
+
 import java.time.LocalDateTime;
 
 public class Post {
@@ -54,5 +56,10 @@ public class Post {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void edit(PostEditDto postEditDto) {
+        this.title = postEditDto.getTitle();
+        this.content = postEditDto.getContent();
     }
 }
