@@ -22,13 +22,10 @@ public class MainController {
         this.beforeLoginMenuMap.put("2", "Login");
         this.beforeLoginMenuMap.put("3", "Exit");
 
-        this.afterLoginMenuMap.put("1", "Post List");
-        this.afterLoginMenuMap.put("2", "Write Post");
-        this.afterLoginMenuMap.put("3", "Show Post");
-        this.afterLoginMenuMap.put("4", "Edit Post");
-        this.afterLoginMenuMap.put("5", "Delete Post");
-        this.afterLoginMenuMap.put("6", "Logout");
-        this.afterLoginMenuMap.put("7", "Exit");
+        this.afterLoginMenuMap.put("1", "Post Manage");
+        this.afterLoginMenuMap.put("2", "User Manage");
+        this.afterLoginMenuMap.put("3", "Logout");
+        this.afterLoginMenuMap.put("4", "Exit");
 
         this.boardController = new BoardController(this.session, new BoardService(new MemoryBoardRepository()));
         this.userController = new UserController(this.session, new UserService(new MemoryUserRepository()));
@@ -37,8 +34,8 @@ public class MainController {
     public Map<String, Map<String, String>> getMenu() {
         Map<String, Map<String, String>> menuMap = new HashMap<>();
 
-        menuMap.put("before_login", beforeLoginMenuMap);
-        menuMap.put("after_login", afterLoginMenuMap);
+        menuMap.put("before_login", this.beforeLoginMenuMap);
+        menuMap.put("after_login", this.afterLoginMenuMap);
 
         return menuMap;
     }
@@ -67,25 +64,16 @@ public class MainController {
                 try {
                     switch (inputMenu) {
                         case "1":
-                            this.boardController.showPostList();
+                            this.boardController.runMenu();
                             break;
                         case "2":
-                            this.boardController.storePost();
+                            this.userController.runMenu();
                             break;
                         case "3":
-                            this.boardController.showPost();
+                            System.out.println("Logout");
+                            this.session.logout();
                             break;
                         case "4":
-                            this.boardController.editPost();
-                            break;
-                        case "5":
-                            this.boardController.deletePost();
-                            break;
-                        case "6":
-                            System.out.print("Logout");
-                            session.logout();
-                            break;
-                        case "7":
                         default:
                             run = false;
                     }

@@ -6,6 +6,8 @@ import dto.UserLoginDto;
 import dto.UserStoreDto;
 import service.UserService;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserController {
@@ -13,10 +15,48 @@ public class UserController {
     private final UserService userService;
     private final Scanner scanner;
 
+    private final Map<String, String> userMenu = new LinkedHashMap<>();
+
     public UserController(Session session, UserService userService) {
         this.session = session;
         this.userService = userService;
         this.scanner = new Scanner(System.in);
+
+        this.userMenu.put("1", "Show User");
+        this.userMenu.put("2", "Edit Password");
+        this.userMenu.put("3", "Logout");
+        this.userMenu.put("4", "Back");
+    }
+
+    public void runMenu() {
+        boolean openMenu = true;
+
+        while (openMenu) {
+            for (String menuKey : this.userMenu.keySet()) {
+                String menuValue = this.userMenu.get(menuKey);
+                System.out.print(menuKey + ". " + menuValue + "\t");
+            }
+            System.out.println();
+
+            System.out.print("Select Menu > ");
+            String inputMenu = scanner.nextLine();
+
+            switch (inputMenu) {
+                case "1":
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    System.out.println("Logout");
+                    this.session.logout();
+                    openMenu = false;
+                    break;
+                case "4":
+                default:
+                    openMenu = false;
+                    break;
+            }
+        }
     }
 
     public void signUp() {

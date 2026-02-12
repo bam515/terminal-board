@@ -12,10 +12,62 @@ public class BoardController {
     private final BoardService boardService;
     private final Scanner scanner;
 
+    private final Map<String, String> postMenu = new LinkedHashMap<>();
+
     public BoardController(Session session, BoardService boardService) {
         this.session = session;
         this.boardService = boardService;
         this.scanner = new Scanner(System.in);
+
+        this.postMenu.put("1", "Post List");
+        this.postMenu.put("2", "Write Post");
+        this.postMenu.put("3", "Show Post");
+        this.postMenu.put("4", "Edit Post");
+        this.postMenu.put("5", "Delete Post");
+        this.postMenu.put("6", "Logout");
+        this.postMenu.put("7", "Back");
+    }
+
+    public void runMenu() {
+        boolean openMenu = true;
+
+        while (openMenu) {
+            for (String menuKey : this.postMenu.keySet()) {
+                String menuValue = this.postMenu.get(menuKey);
+                System.out.print(menuKey + ". " + menuValue + "\t");
+            }
+            System.out.println();
+
+            System.out.print("Select Menu > ");
+            String inputMenu = scanner.nextLine();
+
+            switch (inputMenu) {
+                case "1":
+                    this.showPostList();
+                    break;
+                case "2":
+                    this.storePost();
+                    break;
+                case "3":
+                    this.showPost();
+                    break;
+                case "4":
+                    this.editPost();
+                    break;
+                case "5":
+                    this.deletePost();
+                    break;
+                case "6":
+                    System.out.println("Logout");
+                    this.session.logout();
+                    openMenu = false;
+                    break;
+                case "7":
+                default:
+                    openMenu = false;
+                    break;
+            }
+        }
     }
 
     public void showPostList() {
