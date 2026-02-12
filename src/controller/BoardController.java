@@ -4,6 +4,8 @@ import dto.PostEditDto;
 import dto.PostListDto;
 import dto.PostShowDto;
 import dto.PostWriteDto;
+import exception.FieldEmptyException;
+import exception.PostNotFoundException;
 import service.BoardService;
 
 import java.util.*;
@@ -104,7 +106,9 @@ public class BoardController {
                     default:
                         run = false;
                 }
-            } catch (Exception e) {
+            } catch (PostNotFoundException e) {
+                System.out.println(e.getMessage());
+            } catch (FieldEmptyException e) {
                 System.out.println(e.getMessage());
             }
         }
