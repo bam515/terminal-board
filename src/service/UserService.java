@@ -23,7 +23,7 @@ public class UserService {
         this.userRepository.storeUser(user);
     }
 
-    public boolean login(UserLoginDto userLoginDto) {
+    public User login(UserLoginDto userLoginDto) {
         List<User> userList = this.userRepository.getUserList();
         if (userList.isEmpty()) {
             throw new UserNotFoundException("User not found.");
@@ -33,7 +33,7 @@ public class UserService {
             if (Objects.equals(user.getUserId(), userLoginDto.getUserId())) {
                 if (Objects.equals(user.getPassword(), userLoginDto.getPassword())) {
                     this.userRepository.updateLastLoginDate(user.getId());
-                    return true;
+                    return user;
                 } else {
                     throw new WrongPasswordException("Wrong password.");
                 }
@@ -41,6 +41,6 @@ public class UserService {
                 throw new UserNotFoundException("User not found.");
             }
         }
-        return false;
+        return null;
     }
 }
