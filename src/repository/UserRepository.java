@@ -13,4 +13,6 @@ public interface UserRepository {
     List<User> getUserList();
 
     User getUserById(Long id);
+
+    String getUserName(Long id);
 }

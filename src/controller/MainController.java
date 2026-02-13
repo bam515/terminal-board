@@ -1,9 +1,9 @@
 package controller;
 
 import common.Session;
-import repository.MemoryBoardRepository;
-import repository.MemoryUserRepository;
+import repository.*;
 import service.BoardService;
+import service.CommentService;
 import service.UserService;
 
 import java.util.*;
@@ -27,8 +27,13 @@ public class MainController {
         this.afterLoginMenuMap.put("3", "Logout");
         this.afterLoginMenuMap.put("4", "Exit");
 
-        this.boardController = new BoardController(this.session, new BoardService(new MemoryBoardRepository()));
-        this.userController = new UserController(this.session, new UserService(new MemoryUserRepository()));
+        UserRepository userRepository = new MemoryUserRepository();
+        CommentRepository commentRepository = new MemoryCommentRepository();
+        BoardRepository boardRepository = new MemoryBoardRepository();
+
+        CommentController commentController = new CommentController(this.session, new CommentService(commentRepository, userRepository));
+        this.boardController = new BoardController(this.session, new BoardService(boardRepository), commentController);
+        this.userController = new UserController(this.session, new UserService(userRepository));
     }
 
     public Map<String, Map<String, String>> getMenu() {

@@ -10,13 +10,16 @@ public class BoardController {
     private final Session session;
     private final BoardService boardService;
     private final Scanner scanner;
+    private final CommentController commentController;
 
     private final Map<String, String> postMenu = new LinkedHashMap<>();
 
-    public BoardController(Session session, BoardService boardService) {
+    public BoardController(Session session, BoardService boardService, CommentController commentController) {
         this.session = session;
         this.boardService = boardService;
         this.scanner = new Scanner(System.in);
+
+        this.commentController = commentController;
 
         this.postMenu.put("1", "Post List");
         this.postMenu.put("2", "Write Post");
@@ -107,6 +110,8 @@ public class BoardController {
         System.out.println("content: " + postShowDto.content());
         System.out.println("writer: " + postShowDto.writer());
         System.out.println("createdAt: " + postShowDto.createdAt());
+
+        this.commentController.showCommentList(id);
     }
 
     public void editPost() {

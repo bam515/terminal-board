@@ -42,4 +42,10 @@ public class MemoryUserRepository implements UserRepository {
         }
         throw new UserNotFoundException("User not found.");
     }
+
+    @Override
+    public String getUserName(Long id) {
+        User user = this.getUserById(id);
+        return user.getName();
+    }
 }

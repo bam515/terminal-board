@@ -1,0 +1,46 @@
+package domain;
+
+import java.time.LocalDateTime;
+
+public class Comment {
+    private Long id;
+    private final Long userId;
+    private final Long postId;
+    private String content;
+    private final LocalDateTime createdAt;
+
+    public Comment(Long userId, Long postId, String content) {
+        this.userId = userId;
+        this.postId = postId;
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void editComment(String content) {
+        this.content = content;
+    }
+}
