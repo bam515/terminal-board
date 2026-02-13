@@ -49,7 +49,7 @@ public class Post {
     }
 
     public void edit(PostEditDto postEditDto) {
-        this.title = postEditDto.getTitle();
-        this.content = postEditDto.getContent();
+        this.title = postEditDto.title();
+        this.content = postEditDto.content();
     }
 }

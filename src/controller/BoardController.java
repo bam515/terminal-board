@@ -1,7 +1,6 @@
 package controller;
 
 import common.Session;
-import domain.Post;
 import dto.*;
 import service.BoardService;
 
@@ -69,11 +68,11 @@ public class BoardController {
 
         List<PostListDto> postListDtoList = this.boardService.getPostList();
         for (PostListDto postListDto : postListDtoList) {
-            System.out.println("id: " + postListDto.getId());
-            System.out.println("title: " + postListDto.getTitle());
-            System.out.println("content: " + postListDto.getContent());
-            System.out.println("writer: " + postListDto.getWriter());
-            System.out.println("createdAt: " + postListDto.getCreatedAt());
+            System.out.println("id: " + postListDto.id());
+            System.out.println("title: " + postListDto.title());
+            System.out.println("content: " + postListDto.content());
+            System.out.println("writer: " + postListDto.writer());
+            System.out.println("createdAt: " + postListDto.createdAt());
         }
     }
 
@@ -87,9 +86,9 @@ public class BoardController {
         String content = this.scanner.nextLine();
 
         LoginUserDto loginUserDto = this.session.getUser();
-        String writer = loginUserDto.getUserId();
+        String writer = loginUserDto.userId();
 
-        Long writerId = loginUserDto.getId();
+        Long writerId = loginUserDto.id();
 
         PostWriteDto postWriteDto = new PostWriteDto(writerId, title, content, writer);
         this.boardService.storePost(postWriteDto);
@@ -104,10 +103,10 @@ public class BoardController {
         Long id = Long.parseLong(strId);
 
         PostShowDto postShowDto = this.boardService.showPost(id);
-        System.out.println("title: " + postShowDto.getTitle());
-        System.out.println("content: " + postShowDto.getContent());
-        System.out.println("writer: " + postShowDto.getWriter());
-        System.out.println("createdAt: " + postShowDto.getCreatedAt());
+        System.out.println("title: " + postShowDto.title());
+        System.out.println("content: " + postShowDto.content());
+        System.out.println("writer: " + postShowDto.writer());
+        System.out.println("createdAt: " + postShowDto.createdAt());
     }
 
     public void editPost() {

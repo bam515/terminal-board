@@ -30,15 +30,15 @@ public class BoardService {
     }
 
     public void storePost(PostWriteDto postWriteDto) {
-        if (postWriteDto.getTitle().isEmpty()) {
+        if (postWriteDto.title().isEmpty()) {
             throw new FieldEmptyException("Title is empty");
-        } else if (postWriteDto.getContent().isEmpty()) {
+        } else if (postWriteDto.content().isEmpty()) {
             throw new FieldEmptyException("Content is empty.");
-        } else if (postWriteDto.getWriter().isEmpty()) {
+        } else if (postWriteDto.writer().isEmpty()) {
             throw new FieldEmptyException("Writer is empty.");
         }
 
-        Post post = new Post(postWriteDto.getWriterId(), postWriteDto.getTitle(), postWriteDto.getContent(), postWriteDto.getWriter());
+        Post post = new Post(postWriteDto.writerId(), postWriteDto.title(), postWriteDto.content(), postWriteDto.writer());
         this.boardRepository.storePost(post);
     }
 
@@ -51,13 +51,13 @@ public class BoardService {
     }
 
     public void editPost(PostEditDto postEditDto) {
-        if (postEditDto.getTitle().isEmpty()) {
+        if (postEditDto.title().isEmpty()) {
             throw new FieldEmptyException("Title is empty.");
-        } else if (postEditDto.getContent().isEmpty()) {
+        } else if (postEditDto.content().isEmpty()) {
             throw new FieldEmptyException("Content is empty.");
         }
 
-        Long id = postEditDto.getId();
+        Long id = postEditDto.id();
         Post post = this.boardRepository.getPostById(id);
 
         post.edit(postEditDto);
@@ -74,7 +74,7 @@ public class BoardService {
         }
 
         Long writerId = post.getWriterId();
-        if (!Objects.equals(loginUserDto.getId(), writerId)) {
+        if (!Objects.equals(loginUserDto.id(), writerId)) {
             throw new UnauthorizedException("You do not have permission to perform this action.");
         }
     }

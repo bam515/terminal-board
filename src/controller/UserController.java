@@ -94,10 +94,10 @@ public class UserController {
         System.out.println("Show User");
 
         LoginUserDto loginUserDto = this.session.getUser();
-        System.out.println("ID: " + loginUserDto.getUserId());
-        System.out.println("NAME: " + loginUserDto.getName());
-        System.out.println("createdAt: " + loginUserDto.getCreatedAt());
-        System.out.println("lastLoginDate: " + loginUserDto.getLastLoginDate());
+        System.out.println("ID: " + loginUserDto.userId());
+        System.out.println("NAME: " + loginUserDto.name());
+        System.out.println("createdAt: " + loginUserDto.createdAt());
+        System.out.println("lastLoginDate: " + loginUserDto.lastLoginDate());
     }
 
     // -- 현재 로그인한 계정 비밀번호 변경
