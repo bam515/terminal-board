@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MemoryUserRepository implements UserRepository {
-    List<User> userList = new ArrayList<>();
+    private final List<User> userList = new ArrayList<>();
     private Long userLastId = 0L;
 
     @Override
@@ -41,14 +41,5 @@ public class MemoryUserRepository implements UserRepository {
             }
         }
         throw new UserNotFoundException("User not found.");
-    }
-
-    @Override
-    public void editPassword(Long id, String newPassword) {
-        for (User user : this.userList) {
-            if (Objects.equals(user.getId(), id)) {
-                user.editPassword(newPassword);
-            }
-        }
     }
 }

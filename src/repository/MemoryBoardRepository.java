@@ -7,27 +7,27 @@ import java.util.List;
 import java.util.Objects;
 
 public class MemoryBoardRepository implements BoardRepository {
-    List<Post> postList = new ArrayList<>();
+    private final List<Post> postList = new ArrayList<>();
     private Long postLastId = 0L;
 
     public MemoryBoardRepository() {}
 
     @Override
     public List<Post> getPostList() {
-        return new ArrayList<>(postList);
+        return new ArrayList<>(this.postList);
     }
 
     @Override
     public void storePost(Post post) {
-        postLastId += 1;
-        post.setId(postLastId);
+        this.postLastId += 1;
+        post.setId(this.postLastId);
 
-        postList.add(post);
+        this.postList.add(post);
     }
 
     @Override
     public Post getPostById(Long id) {
-        for (Post post : postList) {
+        for (Post post : this.postList) {
             if (Objects.equals(post.getId(), id)) {
                 return post;
             }
@@ -37,9 +37,9 @@ public class MemoryBoardRepository implements BoardRepository {
 
     @Override
     public void deletePostById(Long id) {
-        for (int i = 0; i < postList.size(); i++) {
-            if (Objects.equals(postList.get(i).getId(), id)) {
-                postList.remove(i);
+        for (int i = 0; i < this.postList.size(); i++) {
+            if (Objects.equals(this.postList.get(i).getId(), id)) {
+                this.postList.remove(i);
                 break;
             }
         }

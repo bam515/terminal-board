@@ -44,7 +44,7 @@ public class UserService {
     public void editPassword(LoginUserDto loginUserDto, EditPasswordDto editPasswordDto) {
         User user = this.userRepository.getUserById(loginUserDto.id());
         if (Objects.equals(user.getPassword(), editPasswordDto.beforePassword())) {
-            this.userRepository.editPassword(loginUserDto.id(), editPasswordDto.newPassword());
+            user.editPassword(editPasswordDto.newPassword());
         } else {
             throw new WrongPasswordException("Wrong password.");
         }
