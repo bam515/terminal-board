@@ -1,16 +1,15 @@
 package service;
 
 import domain.Post;
-import dto.PostEditDto;
-import dto.PostListDto;
-import dto.PostShowDto;
-import dto.PostWriteDto;
+import dto.*;
 import exception.FieldEmptyException;
 import exception.PostNotFoundException;
+import exception.UnauthorizedException;
 import repository.BoardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BoardService {
     private final BoardRepository boardRepository;
@@ -21,7 +20,7 @@ public class BoardService {
 
     public List<PostListDto> getPostList() {
         List<PostListDto> postListDtos = new ArrayList<>();
-        List<Post> postList = boardRepository.getPostList();
+        List<Post> postList = this.boardRepository.getPostList();
 
         for (Post post : postList) {
             PostListDto postListDto = new PostListDto(post.getId(), post.getTitle(), post.getContent(), post.getWriter(), post.getCreatedAt());
@@ -39,12 +38,12 @@ public class BoardService {
             throw new FieldEmptyException("Writer is empty.");
         }
 
-        Post post = new Post(postWriteDto.getTitle(), postWriteDto.getContent(), postWriteDto.getWriter());
-        boardRepository.storePost(post);
+        Post post = new Post(postWriteDto.getWriterId(), postWriteDto.getTitle(), postWriteDto.getContent(), postWriteDto.getWriter());
+        this.boardRepository.storePost(post);
     }
 
     public PostShowDto showPost(Long id) {
-        Post post = boardRepository.getPostById(id);
+        Post post = this.boardRepository.getPostById(id);
         if (post == null) {
             throw new PostNotFoundException("Post is not found.");
         }
@@ -59,19 +58,24 @@ public class BoardService {
         }
 
         Long id = postEditDto.getId();
-        Post post = boardRepository.getPostById(id);
-        if (post == null) {
-            throw new PostNotFoundException("Post is not found.");
-        }
+        Post post = this.boardRepository.getPostById(id);
 
         post.edit(postEditDto);
     }
 
     public void deletePost(Long id) {
-        Post post = boardRepository.getPostById(id);
+        this.boardRepository.deletePostById(id);
+    }
+
+    public void validateWriter(LoginUserDto loginUserDto, Long postId) {
+        Post post = this.boardRepository.getPostById(postId);
         if (post == null) {
             throw new PostNotFoundException("Post is not found.");
         }
-        boardRepository.deletePostById(id);
+
+        Long writerId = post.getWriterId();
+        if (!Objects.equals(loginUserDto.getId(), writerId)) {
+            throw new UnauthorizedException("You do not have permission to perform this action.");
+        }
     }
 }

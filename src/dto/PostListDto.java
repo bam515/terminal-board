@@ -3,11 +3,11 @@ package dto;
 import java.time.LocalDateTime;
 
 public class PostListDto {
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private LocalDateTime createdAt;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final LocalDateTime createdAt;
 
     public PostListDto(Long id, String title, String content, String writer, LocalDateTime createdAt) {
         this.id = id;

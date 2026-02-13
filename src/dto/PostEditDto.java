@@ -1,9 +1,9 @@
 package dto;
 
 public class PostEditDto {
-    private Long id;
-    private String title;
-    private String content;
+    private final Long id;
+    private final String title;
+    private final String content;
 
     public PostEditDto(Long id, String title, String content) {
         this.id = id;

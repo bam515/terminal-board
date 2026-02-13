@@ -3,10 +3,10 @@ package dto;
 import java.time.LocalDateTime;
 
 public class PostShowDto {
-    private String title;
-    private String content;
-    private String writer;
-    private LocalDateTime createdAt;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final LocalDateTime createdAt;
 
     public PostShowDto(String title, String content, String writer, LocalDateTime createdAt) {
         this.title = title;

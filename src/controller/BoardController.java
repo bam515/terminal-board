@@ -1,7 +1,7 @@
 package controller;
 
 import common.Session;
-import domain.User;
+import domain.Post;
 import dto.*;
 import service.BoardService;
 
@@ -89,7 +89,9 @@ public class BoardController {
         LoginUserDto loginUserDto = this.session.getUser();
         String writer = loginUserDto.getUserId();
 
-        PostWriteDto postWriteDto = new PostWriteDto(title, content, writer);
+        Long writerId = loginUserDto.getId();
+
+        PostWriteDto postWriteDto = new PostWriteDto(writerId, title, content, writer);
         this.boardService.storePost(postWriteDto);
     }
 
@@ -115,6 +117,10 @@ public class BoardController {
         String editStrId = this.scanner.nextLine();
         Long editId = Long.parseLong(editStrId);
 
+        // -- 해당 게시글이 내 게시글인지 확인
+        LoginUserDto loginUserDto = this.session.getUser();
+        this.boardService.validateWriter(loginUserDto, editId);
+
         System.out.print("title: ");
         String editTitle = this.scanner.nextLine();
 
@@ -131,6 +137,10 @@ public class BoardController {
         System.out.print("Input Post Id: ");
         String deleteStrId = this.scanner.nextLine();
         Long deleteId = Long.parseLong(deleteStrId);
+
+        // -- 해당 게시글이 내 게시글인지 확인
+        LoginUserDto loginUserDto = this.session.getUser();
+        this.boardService.validateWriter(loginUserDto, deleteId);
 
         this.boardService.deletePost(deleteId);
     }
