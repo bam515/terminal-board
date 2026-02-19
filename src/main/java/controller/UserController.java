@@ -47,12 +47,14 @@ public class UserController {
                     this.showUser();
                     break;
                 case "2":
-                    this.editUser();
+                    this.editUserPassword();
                     break;
                 case "3":
-                default:
                     openMenu = false;
                     break;
+            }
+            if (!this.session.isLoggedIn()) {
+                openMenu = false;
             }
         }
     }
@@ -101,7 +103,7 @@ public class UserController {
     }
 
     // -- 현재 로그인한 계정 비밀번호 변경
-    public void editUser() {
+    public void editUserPassword() {
         System.out.println("Edit User");
 
         System.out.print("Input Current Password: ");
@@ -114,5 +116,8 @@ public class UserController {
 
         EditPasswordDto editPasswordDto = new EditPasswordDto(beforePassword, newPassword);
         this.userService.editPassword(loginUserDto, editPasswordDto);
+
+        // -- 로그아웃
+        this.session.logout();
     }
 }

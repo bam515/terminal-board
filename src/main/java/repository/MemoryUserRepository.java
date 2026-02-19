@@ -48,4 +48,9 @@ public class MemoryUserRepository implements UserRepository {
         User user = this.getUserById(id);
         return user.getName();
     }
+
+    @Override
+    public void editPassword(User user) {
+
+    }
 }

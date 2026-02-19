@@ -5,6 +5,7 @@ import dto.EditPasswordDto;
 import dto.LoginUserDto;
 import dto.UserLoginDto;
 import dto.UserStoreDto;
+import exception.DuplicateUserIdException;
 import exception.UserNotFoundException;
 import exception.WrongPasswordException;
 import repository.UserRepository;
@@ -21,6 +22,9 @@ public class UserService {
     }
 
     public void signUp(UserStoreDto userStoreDto) {
+        // -- 중복 확인
+        this.validateDuplicateUserId(userStoreDto.userId());
+
         User user = new User(userStoreDto.userId(), userStoreDto.password(), userStoreDto.name(), LocalDateTime.now());
         this.userRepository.storeUser(user);
     }
@@ -45,8 +49,20 @@ public class UserService {
         User user = this.userRepository.getUserById(loginUserDto.id());
         if (Objects.equals(user.getPassword(), editPasswordDto.beforePassword())) {
             user.editPassword(editPasswordDto.newPassword());
+
+            this.userRepository.editPassword(user);
         } else {
             throw new WrongPasswordException("Wrong password.");
+        }
+    }
+
+    public void validateDuplicateUserId(String userId) {
+        List<User> userList = this.userRepository.getUserList();
+
+        for (User user : userList) {
+            if (Objects.equals(user.getUserId(), userId)) {
+                throw new DuplicateUserIdException("This user id is already exists.");
+            }
         }
     }
 }

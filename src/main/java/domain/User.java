@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 
 public class User {
     private Long id;
-    private final String userId;
+    private String userId;
     private String password;
-    private final String name;
-    private final LocalDateTime createdAt;
+    private String name;
+    private LocalDateTime createdAt;
     private LocalDateTime lastLoginDate;
+
+    public User() {}
 
     public User(String userId, String password, String name, LocalDateTime createdAt) {
         this.userId = userId;

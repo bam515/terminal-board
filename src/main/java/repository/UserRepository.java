@@ -15,4 +15,6 @@ public interface UserRepository {
     User getUserById(Long id);
 
     String getUserName(Long id);
+
+    void editPassword(User user);
 }
