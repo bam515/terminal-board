@@ -6,11 +6,13 @@ import java.time.LocalDateTime;
 
 public class Post {
     private Long id;
-    private final Long writerId;
+    private Long writerId;
     private String title;
     private String content;
-    private final String writer;
-    private final LocalDateTime createdAt;
+    private String writer;
+    private LocalDateTime createdAt;
+
+    public Post() {}
 
     public Post(Long writerId, String title, String content, String writer) {
         this.writerId = writerId;

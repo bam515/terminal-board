@@ -38,3 +38,5 @@ build
 
 # Ignore Kotlin plugin data
 .kotlin
+
+/db
