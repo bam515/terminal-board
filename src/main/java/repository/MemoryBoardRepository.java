@@ -44,4 +44,9 @@ public class MemoryBoardRepository implements BoardRepository {
             }
         }
     }
+
+    @Override
+    public void editPost(Post post) {
+
+    }
 }

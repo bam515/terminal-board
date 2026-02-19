@@ -61,6 +61,8 @@ public class BoardService {
         Post post = this.boardRepository.getPostById(id);
 
         post.edit(postEditDto);
+
+        this.boardRepository.editPost(post);
     }
 
     public void deletePost(Long id) {
