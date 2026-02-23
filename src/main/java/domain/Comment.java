@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 
 public class Comment {
     private Long id;
-    private final Long userId;
-    private final Long postId;
+    private Long userId;
+    private Long postId;
     private String content;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
+    public Comment() {}
 
     public Comment(Long userId, Long postId, String content) {
         this.userId = userId;

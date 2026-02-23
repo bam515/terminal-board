@@ -29,7 +29,8 @@ public class MainController {
 
 //        UserRepository userRepository = new MemoryUserRepository();
         UserRepository userRepository = new FileUserRepository();
-        CommentRepository commentRepository = new MemoryCommentRepository();
+        // CommentRepository commentRepository = new MemoryCommentRepository();
+        CommentRepository commentRepository = new FileCommentRepository();
 //        BoardRepository boardRepository = new MemoryBoardRepository();
         BoardRepository boardRepository = new FileBoardRepository();
 

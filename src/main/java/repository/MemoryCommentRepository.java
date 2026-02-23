@@ -51,4 +51,7 @@ public class MemoryCommentRepository implements CommentRepository {
         }
         throw new CommentNotFoundException("Comment Not found.");
     }
+
+    @Override
+    public void editComment(Comment comment) {}
 }
