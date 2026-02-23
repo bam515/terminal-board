@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.17.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.17.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
