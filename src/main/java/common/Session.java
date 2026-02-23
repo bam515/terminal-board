@@ -7,7 +7,7 @@ public class Session {
     private User user = null;
 
     public LoginUserDto getUser() {
-        return new LoginUserDto(this.user.getId(), this.user.getUserId(), this.user.getName(), this.user.getCreatedAt(), this.user.getLastLoginDate());
+        return new LoginUserDto(this.user.getId(), this.user.getLoginId(), this.user.getName(), this.user.getCreatedAt(), this.user.getLastLoginDate());
     }
 
     public void login(User user) {

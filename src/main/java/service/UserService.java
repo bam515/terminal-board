@@ -33,7 +33,7 @@ public class UserService {
         List<User> userList = this.userRepository.getUserList();
 
         for (User user : userList) {
-            if (Objects.equals(user.getUserId(), userLoginDto.userId())) {
+            if (Objects.equals(user.getLoginId(), userLoginDto.userId())) {
                 if (Objects.equals(user.getPassword(), userLoginDto.password())) {
                     this.userRepository.updateLastLoginDate(user.getId());
                     return user;
@@ -60,7 +60,7 @@ public class UserService {
         List<User> userList = this.userRepository.getUserList();
 
         for (User user : userList) {
-            if (Objects.equals(user.getUserId(), userId)) {
+            if (Objects.equals(user.getLoginId(), userId)) {
                 throw new DuplicateUserIdException("This user id is already exists.");
             }
         }
