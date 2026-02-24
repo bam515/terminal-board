@@ -33,7 +33,7 @@ public class UserService {
         List<User> userList = this.userRepository.getUserList();
 
         for (User user : userList) {
-            if (Objects.equals(user.getLoginId(), userLoginDto.userId())) {
+            if (Objects.equals(user.getLoginId(), userLoginDto.loginId())) {
                 if (Objects.equals(user.getPassword(), userLoginDto.password())) {
                     this.userRepository.updateLastLoginDate(user.getId());
                     return user;
