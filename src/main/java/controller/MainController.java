@@ -32,7 +32,8 @@ public class MainController {
         // CommentRepository commentRepository = new MemoryCommentRepository();
         CommentRepository commentRepository = new FileCommentRepository();
 //        BoardRepository boardRepository = new MemoryBoardRepository();
-        BoardRepository boardRepository = new FileBoardRepository();
+//        BoardRepository boardRepository = new FileBoardRepository();
+        BoardRepository boardRepository = new JdbcBoardRepository();
 
         CommentController commentController = new CommentController(this.session, new CommentService(commentRepository, userRepository));
         this.boardController = new BoardController(this.session, new BoardService(boardRepository), commentController);

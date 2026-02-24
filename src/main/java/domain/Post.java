@@ -22,6 +22,15 @@ public class Post {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Post(Long id, Long writerId, String title, String content, String writer, LocalDateTime createdAt) {
+        this.id = id;
+        this.writerId = writerId;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.createdAt = createdAt;
+    }
+
     public Long getWriterId() {
         return this.writerId;
     }
