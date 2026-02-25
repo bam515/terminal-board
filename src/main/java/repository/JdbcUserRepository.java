@@ -6,7 +6,6 @@ import exception.DBConnectionException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.NoSuchObjectException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -88,9 +87,8 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "SELECT * FROM user";
 
         try (Connection connection = this.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            ResultSet resultSet = statement.executeQuery();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 User user = new User(resultSet.getLong("id"), resultSet.getString("login_id"),
@@ -115,11 +113,12 @@ public class JdbcUserRepository implements UserRepository {
 
             statement.setLong(1, id);
 
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                user = new User(resultSet.getLong("id"), resultSet.getString("login_id"),
-                        resultSet.getString("password"), resultSet.getString("name"),
-                        resultSet.getObject("created_at", LocalDateTime.class), resultSet.getObject("last_login_date", LocalDateTime.class));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    user = new User(resultSet.getLong("id"), resultSet.getString("login_id"),
+                            resultSet.getString("password"), resultSet.getString("name"),
+                            resultSet.getObject("created_at", LocalDateTime.class), resultSet.getObject("last_login_date", LocalDateTime.class));
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -138,9 +137,10 @@ public class JdbcUserRepository implements UserRepository {
 
             statement.setLong(1, id);
 
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                name = resultSet.getString("name");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    name = resultSet.getString("name");
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
