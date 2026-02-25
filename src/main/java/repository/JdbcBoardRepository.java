@@ -39,7 +39,7 @@ public class JdbcBoardRepository implements BoardRepository {
     public void deletePostById(Long id) {
         String deleteSql = "DELETE FROM post WHERE id = ?";
 
-        try (final Connection connection = this.getConnection();
+        try (Connection connection = this.getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteSql)) {
 
             statement.setLong(1, id);

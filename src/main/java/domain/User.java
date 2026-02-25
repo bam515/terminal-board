@@ -19,6 +19,15 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public User(Long id, String loginId, String password, String name, LocalDateTime createdAt, LocalDateTime lastLoginDate) {
+        this.id = id;
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.lastLoginDate = lastLoginDate;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

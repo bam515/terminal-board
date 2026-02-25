@@ -28,7 +28,8 @@ public class MainController {
         this.afterLoginMenuMap.put("4", "Exit");
 
 //        UserRepository userRepository = new MemoryUserRepository();
-        UserRepository userRepository = new FileUserRepository();
+//        UserRepository userRepository = new FileUserRepository();
+        UserRepository userRepository = new JdbcUserRepository();
         // CommentRepository commentRepository = new MemoryCommentRepository();
         CommentRepository commentRepository = new FileCommentRepository();
 //        BoardRepository boardRepository = new MemoryBoardRepository();
