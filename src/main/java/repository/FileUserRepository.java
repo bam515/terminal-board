@@ -45,9 +45,9 @@ public class FileUserRepository implements UserRepository {
     }
 
     @Override
-    public void storeUser(User user) {
+    public Long storeUser(User user) {
+        Long id = 0L;
         try {
-            Long id = 0L;
             List<User> userList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<User>>() {});
             userList = new ArrayList<>(userList);
 
@@ -62,13 +62,17 @@ public class FileUserRepository implements UserRepository {
             userList.add(user);
 
             this.objectMapper.writeValue(this.dbFile, userList);
+
+            id = user.getId();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return id;
     }
 
     @Override
-    public void updateLastLoginDate(Long id) {
+    public int updateLastLoginDate(Long id) {
+        int result = 0;
         try {
             List<User> userList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<User>>() {});
             userList = new ArrayList<>(userList);
@@ -76,6 +80,7 @@ public class FileUserRepository implements UserRepository {
             for (User user : userList) {
                 if (Objects.equals(user.getId(), id)) {
                     user.updateLastLoginDate();
+                    result = 1;
                     break;
                 }
             }
@@ -84,6 +89,7 @@ public class FileUserRepository implements UserRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @Override
@@ -134,7 +140,8 @@ public class FileUserRepository implements UserRepository {
     }
 
     @Override
-    public void editPassword(User user) {
+    public int editPassword(User user) {
+        int result = 0;
         try {
             List<User> userList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<User>>() {});
             userList = new ArrayList<>(userList);
@@ -153,5 +160,6 @@ public class FileUserRepository implements UserRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 }

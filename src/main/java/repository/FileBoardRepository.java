@@ -127,6 +127,7 @@ public class FileBoardRepository implements BoardRepository {
 
     @Override
     public int editPost(Post post) {
+        int result = 0;
         try {
             List<Post> postList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Post>>() {});
             postList = new ArrayList<>(postList);
@@ -145,5 +146,6 @@ public class FileBoardRepository implements BoardRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 }

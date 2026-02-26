@@ -26,7 +26,7 @@ public class UserService {
         this.validateDuplicateUserId(userStoreDto.userId());
 
         User user = new User(userStoreDto.userId(), userStoreDto.password(), userStoreDto.name(), LocalDateTime.now());
-        this.userRepository.storeUser(user);
+        Long generatedId = this.userRepository.storeUser(user);
     }
 
     public User login(UserLoginDto userLoginDto) {
@@ -35,7 +35,10 @@ public class UserService {
         for (User user : userList) {
             if (Objects.equals(user.getLoginId(), userLoginDto.loginId())) {
                 if (Objects.equals(user.getPassword(), userLoginDto.password())) {
-                    this.userRepository.updateLastLoginDate(user.getId());
+                    int result = this.userRepository.updateLastLoginDate(user.getId());
+                    if (result == 0) {
+                        throw new UserNotFoundException("User not found for edit last login date.");
+                    }
                     return user;
                 } else {
                     throw new WrongPasswordException("Wrong password.");
@@ -50,7 +53,10 @@ public class UserService {
         if (Objects.equals(user.getPassword(), editPasswordDto.beforePassword())) {
             user.editPassword(editPasswordDto.newPassword());
 
-            this.userRepository.editPassword(user);
+            int result = this.userRepository.editPassword(user);
+            if (result == 0) {
+                throw new UserNotFoundException("User not found for edit password.");
+            }
         } else {
             throw new WrongPasswordException("Wrong password.");
         }

@@ -12,20 +12,24 @@ public class MemoryUserRepository implements UserRepository {
     private Long userLastId = 0L;
 
     @Override
-    public void storeUser(User user) {
+    public Long storeUser(User user) {
         this.userLastId += 1;
         user.setId(this.userLastId);
 
         this.userList.add(user);
+        return user.getId();
     }
 
     @Override
-    public void updateLastLoginDate(Long id) {
+    public int updateLastLoginDate(Long id) {
+        int result = 0;
         for (User user : this.userList) {
             if (Objects.equals(user.getId(), id)) {
                 user.updateLastLoginDate();
+                result = 1;
             }
         }
+        return result;
     }
 
     @Override
@@ -50,7 +54,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void editPassword(User user) {
-
+    public int editPassword(User user) {
+        int result = 0;
+        return result;
     }
 }

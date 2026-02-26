@@ -39,11 +39,11 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void storeUser(User user) {
+    public Long storeUser(User user) {
         String sql = "INSERT INTO user (login_id, password, name, created_at) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = this.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, user.getLoginId());
             statement.setString(2, user.getPassword());
@@ -51,7 +51,15 @@ public class JdbcUserRepository implements UserRepository {
             statement.setObject(4, user.getCreatedAt());
 
             int result = statement.executeUpdate();
-            if (result != 1) {
+            if (result == 1) {
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        return resultSet.getLong(1);
+                    } else {
+                        throw new DBConnectionException("Failed to retrieve generated ID.");
+                    }
+                }
+            } else {
                 throw new DBConnectionException("Failed store user.");
             }
         } catch (SQLException e) {
@@ -61,7 +69,9 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateLastLoginDate(Long id) {
+    public int updateLastLoginDate(Long id) {
+        int result = 0;
+
         LocalDateTime lastLoginDate = LocalDateTime.now();
         String sql = "UPDATE user SET last_login_date = ? WHERE id = ?";
 
@@ -71,14 +81,12 @@ public class JdbcUserRepository implements UserRepository {
             statement.setObject(1, lastLoginDate);
             statement.setLong(2, id);
 
-            int result = statement.executeUpdate();
-            if (result != 1) {
-                throw new DBConnectionException("Failed update last login date.");
-            }
+            result = statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new DBConnectionException("Failed update last login date.");
         }
+        return result;
     }
 
     @Override
@@ -150,7 +158,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void editPassword(User user) {
+    public int editPassword(User user) {
+        int result = 0;
         String sql = "UPDATE user SET password = ? WHERE id = ?";
 
         try (Connection connection = this.getConnection();
@@ -159,13 +168,11 @@ public class JdbcUserRepository implements UserRepository {
             statement.setString(1, user.getPassword());
             statement.setLong(2, user.getId());
 
-            int result = statement.executeUpdate();
-            if (result != 1) {
-                throw new DBConnectionException("Failed edit password.");
-            }
+            result = statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new DBConnectionException("Failed edit password.");
         }
+        return result;
     }
 }

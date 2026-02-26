@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface UserRepository {
 
-    void storeUser(User user);
+    Long storeUser(User user);
 
-    void updateLastLoginDate(Long id);
+    int updateLastLoginDate(Long id);
 
     List<User> getUserList();
 
@@ -16,5 +16,5 @@ public interface UserRepository {
 
     String getUserName(Long id);
 
-    void editPassword(User user);
+    int editPassword(User user);
 }
