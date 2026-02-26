@@ -2,6 +2,7 @@ package repository;
 
 import domain.User;
 import exception.DBConnectionException;
+import exception.UserNotFoundException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,7 +34,6 @@ public class JdbcUserRepository implements UserRepository {
                     this.properties.get("datasource.username").toString(),
                     this.properties.get("datasource.password").toString());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed connect database.");
         }
     }
@@ -63,7 +63,6 @@ public class JdbcUserRepository implements UserRepository {
                 throw new DBConnectionException("Failed store user.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed store user.");
         }
     }
@@ -83,7 +82,6 @@ public class JdbcUserRepository implements UserRepository {
 
             result = statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed update last login date.");
         }
         return result;
@@ -105,7 +103,6 @@ public class JdbcUserRepository implements UserRepository {
                 userList.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed load user list.");
         }
         return userList;
@@ -122,14 +119,15 @@ public class JdbcUserRepository implements UserRepository {
             statement.setLong(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     user = new User(resultSet.getLong("id"), resultSet.getString("login_id"),
                             resultSet.getString("password"), resultSet.getString("name"),
                             resultSet.getObject("created_at", LocalDateTime.class), resultSet.getObject("last_login_date", LocalDateTime.class));
+                } else {
+                    throw new UserNotFoundException("User not found.");
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed load user data.");
         }
         return user;
@@ -137,7 +135,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public String getUserName(Long id) {
-        String sql = "SELECT * FROM user WHERE id = ?";
+        String sql = "SELECT name FROM user WHERE id = ?";
         String name = "";
 
         try (Connection connection = this.getConnection();
@@ -146,12 +144,13 @@ public class JdbcUserRepository implements UserRepository {
             statement.setLong(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     name = resultSet.getString("name");
+                } else {
+                    throw new UserNotFoundException("User not found.");
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed load user data.");
         }
         return name;
@@ -170,7 +169,6 @@ public class JdbcUserRepository implements UserRepository {
 
             result = statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed edit password.");
         }
         return result;
