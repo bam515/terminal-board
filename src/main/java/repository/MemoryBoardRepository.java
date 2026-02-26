@@ -18,11 +18,12 @@ public class MemoryBoardRepository implements BoardRepository {
     }
 
     @Override
-    public void storePost(Post post) {
+    public Long storePost(Post post) {
         this.postLastId += 1;
         post.setId(this.postLastId);
 
         this.postList.add(post);
+        return post.getId();
     }
 
     @Override
@@ -36,17 +37,20 @@ public class MemoryBoardRepository implements BoardRepository {
     }
 
     @Override
-    public void deletePostById(Long id) {
+    public int deletePostById(Long id) {
+        int result = 0;
         for (int i = 0; i < this.postList.size(); i++) {
             if (Objects.equals(this.postList.get(i).getId(), id)) {
                 this.postList.remove(i);
+                result = 1;
                 break;
             }
         }
+        return result;
     }
 
     @Override
-    public void editPost(Post post) {
-
+    public int editPost(Post post) {
+        return 0;
     }
 }

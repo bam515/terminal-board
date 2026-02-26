@@ -39,7 +39,7 @@ public class BoardService {
         }
 
         Post post = new Post(postWriteDto.writerId(), postWriteDto.title(), postWriteDto.content(), postWriteDto.writer());
-        this.boardRepository.storePost(post);
+        Long generatedId = this.boardRepository.storePost(post);
     }
 
     public PostShowDto showPost(Long id) {
@@ -62,11 +62,18 @@ public class BoardService {
 
         post.edit(postEditDto);
 
-        this.boardRepository.editPost(post);
+        int result = this.boardRepository.editPost(post);
+        if (result == 0) {
+            throw new PostNotFoundException("Post not found to edit.");
+        }
     }
 
     public void deletePost(Long id) {
-        this.boardRepository.deletePostById(id);
+        int result = this.boardRepository.deletePostById(id);
+
+        if (result == 0) {
+            throw new PostNotFoundException("Post not found to delete.");
+        }
     }
 
     public void validateWriter(LoginUserDto loginUserDto, Long postId) {

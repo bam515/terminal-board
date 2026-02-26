@@ -58,7 +58,8 @@ public class FileBoardRepository implements BoardRepository {
     }
 
     @Override
-    public void storePost(Post post) {
+    public Long storePost(Post post) {
+        Long result = 0L;
         try {
             List<Post> postList;
 
@@ -77,9 +78,12 @@ public class FileBoardRepository implements BoardRepository {
             postList.add(post);
 
             this.objectMapper.writeValue(this.dbFile, postList);
+
+            result = post.getId();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @Override
@@ -100,7 +104,8 @@ public class FileBoardRepository implements BoardRepository {
     }
 
     @Override
-    public void deletePostById(Long id) {
+    public int deletePostById(Long id) {
+        int result = 0;
         try {
             List<Post> postList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Post>>() {});
             postList = new ArrayList<>(postList);
@@ -108,6 +113,7 @@ public class FileBoardRepository implements BoardRepository {
             for (int i = 0; i < postList.size(); i++) {
                 if (Objects.equals(postList.get(i).getId(), id)) {
                     postList.remove(i);
+                    result = 1;
                     break;
                 }
             }
@@ -116,10 +122,11 @@ public class FileBoardRepository implements BoardRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @Override
-    public void editPost(Post post) {
+    public int editPost(Post post) {
         try {
             List<Post> postList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Post>>() {});
             postList = new ArrayList<>(postList);

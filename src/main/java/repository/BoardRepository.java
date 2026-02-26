@@ -7,11 +7,11 @@ public interface BoardRepository {
 
     List<Post> getPostList();
 
-    void storePost(Post post);
+    Long storePost(Post post);
 
     Post getPostById(Long id);
 
-    void deletePostById(Long id);
+    int deletePostById(Long id);
 
-    void editPost(Post post);
+    int editPost(Post post);
 }
