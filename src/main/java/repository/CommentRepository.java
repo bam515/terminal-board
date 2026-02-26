@@ -7,11 +7,11 @@ import java.util.List;
 public interface CommentRepository {
     List<Comment> getCommentList(Long postId);
 
-    void writeComment(Comment comment);
+    Long writeComment(Comment comment);
 
-    void deleteComment(Long commentId);
+    int deleteComment(Long commentId);
 
     Comment getCommentById(Long commentId);
 
-    void editComment(Comment comment);
+    int editComment(Comment comment);
 }

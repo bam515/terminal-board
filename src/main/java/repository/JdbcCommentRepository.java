@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Comment;
+import exception.CommentNotFoundException;
 import exception.DBConnectionException;
 
 import java.io.FileInputStream;
@@ -59,18 +60,17 @@ public class JdbcCommentRepository implements CommentRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed load comment list.");
         }
         return commentList;
     }
 
     @Override
-    public void writeComment(Comment comment) {
+    public Long writeComment(Comment comment) {
         String sql = "INSERT INTO comment (user_id, post_id, content, created_at) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = this.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setLong(1, comment.getUserId());
             statement.setLong(2, comment.getPostId());
@@ -78,17 +78,25 @@ public class JdbcCommentRepository implements CommentRepository {
             statement.setObject(4, LocalDateTime.now());
 
             int result = statement.executeUpdate();
-            if (result != 1) {
+            if (result == 1) {
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        return resultSet.getLong(1);
+                    } else {
+                        throw new DBConnectionException("Failed to retrieve generated ID.");
+                    }
+                }
+            } else {
                 throw new DBConnectionException("Failed store comment.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed store comment.");
         }
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public int deleteComment(Long commentId) {
+        int result = 0;
         String sql = "DELETE FROM comment WHERE id = ?";
 
         try (Connection connection = this.getConnection();
@@ -96,14 +104,11 @@ public class JdbcCommentRepository implements CommentRepository {
 
             statement.setLong(1, commentId);
 
-            int result = statement.executeUpdate();
-            if (result != 1) {
-                throw new DBConnectionException("Failed delete comment.");
-            }
+            result = statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed delete comment.");
         }
+        return result;
     }
 
     @Override
@@ -117,21 +122,23 @@ public class JdbcCommentRepository implements CommentRepository {
             statement.setLong(1, commentId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     comment = new Comment(resultSet.getLong("id"), resultSet.getLong("user_id"),
                             resultSet.getLong("post_id"), resultSet.getString("content"),
                             resultSet.getObject("created_at", LocalDateTime.class));
+                } else {
+                    throw new CommentNotFoundException("Comment not found.");
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed load comment data.");
         }
         return comment;
     }
 
     @Override
-    public void editComment(Comment comment) {
+    public int editComment(Comment comment) {
+        int result = 0;
         String sql = "UPDATE comment SET content = ? WHERE id = ?";
 
         try (Connection connection = this.getConnection();
@@ -140,13 +147,10 @@ public class JdbcCommentRepository implements CommentRepository {
             statement.setString(1, comment.getContent());
             statement.setLong(2, comment.getId());
 
-            int result = statement.executeUpdate();
-            if (result != 1) {
-                throw new DBConnectionException("Failed edit comment.");
-            }
+            result = statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new DBConnectionException("Failed edit comment.");
         }
+        return result;
     }
 }

@@ -47,7 +47,8 @@ public class FileCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public int deleteComment(Long commentId) {
+        int result = 0;
         try {
             List<Comment> commentList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Comment>>() {});
             commentList = new ArrayList<>(commentList);
@@ -55,6 +56,7 @@ public class FileCommentRepository implements CommentRepository {
             for (int i = 0; i < commentList.size(); i++) {
                 if (Objects.equals(commentId, commentList.get(i).getId())) {
                     commentList.remove(i);
+                    result = 1;
                     break;
                 }
             }
@@ -63,7 +65,7 @@ public class FileCommentRepository implements CommentRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+        return result;
     }
 
     @Override
@@ -104,11 +106,11 @@ public class FileCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void writeComment(Comment comment) {
+    public Long writeComment(Comment comment) {
+        Long id = 0L;
         try {
             List<Comment> commentList;
 
-            Long id = 0L;
             commentList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Comment>>() {});
             commentList = new ArrayList<>(commentList);
 
@@ -124,13 +126,16 @@ public class FileCommentRepository implements CommentRepository {
             commentList.add(comment);
 
             this.objectMapper.writeValue(this.dbFile, commentList);
+            id = comment.getId();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return id;
     }
 
     @Override
-    public void editComment(Comment comment) {
+    public int editComment(Comment comment) {
+        int result = 0;
         try {
             List<Comment> commentList = this.objectMapper.readValue(this.dbFile, new TypeReference<List<Comment>>() {});
             commentList = new ArrayList<>(commentList);
@@ -149,5 +154,6 @@ public class FileCommentRepository implements CommentRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 }

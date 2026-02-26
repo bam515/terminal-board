@@ -5,6 +5,7 @@ import dto.CommentEditDto;
 import dto.CommentShowDto;
 import dto.CommentWriteDto;
 import dto.LoginUserDto;
+import exception.CommentNotFoundException;
 import exception.FieldEmptyException;
 import exception.UnauthorizedException;
 import repository.CommentRepository;
@@ -39,7 +40,7 @@ public class CommentService {
         this.validateContent(commentWriteDto.content());
 
         Comment comment = new Comment(loginUserDto.id(), commentWriteDto.postId(), commentWriteDto.content());
-        this.commentRepository.writeComment(comment);
+        Long generatedId = this.commentRepository.writeComment(comment);
     }
 
     public void editComment(CommentEditDto commentEditDto, LoginUserDto loginUserDto) {
@@ -48,13 +49,19 @@ public class CommentService {
         this.validateContent(commentEditDto.content());
 
         Comment comment = this.commentRepository.getCommentById(commentEditDto.commentId());
-        comment.editComment(commentEditDto.content());
+        int result = this.commentRepository.editComment(comment);
+        if (result == 0) {
+            throw new CommentNotFoundException("Comment not found for edit.");
+        }
     }
 
     public void deleteComment(Long commentId, LoginUserDto loginUserDto) {
         this.validateComment(commentId, loginUserDto);
 
-        this.commentRepository.deleteComment(commentId);
+        int result = this.commentRepository.deleteComment(commentId);
+        if (result == 0) {
+            throw new CommentNotFoundException("Comment not found for delete.");
+        }
     }
 
     public void validateComment(Long commentId, LoginUserDto loginUserDto) {

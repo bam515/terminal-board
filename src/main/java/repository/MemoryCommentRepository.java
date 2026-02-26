@@ -25,21 +25,26 @@ public class MemoryCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void writeComment(Comment comment) {
+    public Long writeComment(Comment comment) {
         this.commentLastId += 1;
         comment.setId(this.commentLastId);
 
         this.commentList.add(comment);
+
+        return comment.getId();
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public int deleteComment(Long commentId) {
+        int result = 0;
         for (int i = 0; i < this.commentList.size(); i++) {
             if (Objects.equals(this.commentList.get(i).getId(), commentId)) {
                 this.commentList.remove(i);
+                result = 1;
                 break;
             }
         }
+        return result;
     }
 
     @Override
@@ -53,5 +58,7 @@ public class MemoryCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void editComment(Comment comment) {}
+    public int editComment(Comment comment) {
+        return 0;
+    }
 }
