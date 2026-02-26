@@ -31,7 +31,8 @@ public class MainController {
 //        UserRepository userRepository = new FileUserRepository();
         UserRepository userRepository = new JdbcUserRepository();
         // CommentRepository commentRepository = new MemoryCommentRepository();
-        CommentRepository commentRepository = new FileCommentRepository();
+//        CommentRepository commentRepository = new FileCommentRepository();
+        CommentRepository commentRepository = new JdbcCommentRepository();
 //        BoardRepository boardRepository = new MemoryBoardRepository();
 //        BoardRepository boardRepository = new FileBoardRepository();
         BoardRepository boardRepository = new JdbcBoardRepository();

@@ -18,6 +18,14 @@ public class Comment {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Comment(Long id, Long userId, Long postId, String content, LocalDateTime createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.postId = postId;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
+
     public Long getId() {
         return id;
     }
